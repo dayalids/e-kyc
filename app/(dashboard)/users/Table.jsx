@@ -11,9 +11,12 @@ import {
 	useRowSelect,
 	useSortBy,
 	useGlobalFilter,
-	usePagination
+	usePagination,
+	useFilters
 } from 'react-table';
 import EditForm from './edit';
+import Select from '@/components/ui/Select';
+import { setFilter } from '@/components/partials/app/email/store';
 
 const IndeterminateCheckbox = React.forwardRef(
 	({ indeterminate, ...rest }, ref) => {
@@ -50,112 +53,110 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 	};
 
 	const COLUMNS = [
-    {
-      Header: 'Sr',
-      accessor: 'id',
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: 'Name',
-      accessor: 'firstName',
-      Cell: (row) => {
-        return (
-          <div>
-            <span className="inline-flex items-center">
-              <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-                {row?.cell?.value}
-              </span>
-            </span>
-          </div>
-        );
-      },
-    },
-    {
-      Header: 'Email',
-      accessor: 'email',
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
+		{
+			Header: 'Sr',
+			accessor: 'id',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			}
+		},
+		{
+			Header: 'Name',
+			accessor: 'firstName',
+			Cell: row => {
+				return (
+					<div>
+						<span className='inline-flex items-center'>
+							<span className='text-slate-600 text-sm dark:text-slate-300 capitalize'>
+								{row?.cell?.value}
+							</span>
+						</span>
+					</div>
+				);
+			}
+		},
+		{
+			Header: 'Email',
+			accessor: 'email',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			}
+		},
 
-    {
-      Header: 'Role',
-      accessor: 'userRoles',
-      Cell: (row) => {
-        return <span>{row?.value[0]?.title}</span>;
-      },
-    },
-    {
-      Header: 'Type',
-      accessor: 'userRoles[0]',
-      Cell: (row) => {
-        return <span>Global</span>;
-      },
-    },
+		{
+			Header: 'Role',
+			accessor: 'userRoles',
 
-    {
-      Header: 'status',
-      accessor: 'status',
-      Cell: (row) => {
-        return (
-          <span className="block w-full ">
-            <span
-              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-                row?.cell?.value === 1 ? 'text-success-500  bg-success-500' : ''
-              } 
-            ${row?.cell?.value === 0 ? 'text-warning-500 bg-warning-500' : ''}
+			Cell: row => {
+				return <span>{row?.value[0]?.title}</span>;
+			}
+		},
+
+		{
+			Header: 'status',
+			accessor: 'status',
+			Cell: row => {
+				return (
+					<span className='block w-full'>
+						<span
+							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+								row?.cell?.value === 1
+									? 'text-success-500  bg-success-500'
+									: ''
+							} 
             ${
-              row?.cell?.value === 'canceled'
-                ? 'text-danger-400 bg-danger-800'
-                : ''
-            }
+							row?.cell?.value === 0
+								? 'text-warning-500 bg-warning-500'
+								: ''
+						}
+            ${
+							row?.cell?.value === 'canceled'
+								? 'text-danger-400 bg-danger-800'
+								: ''
+						}
             +
-             `}
-            >
-              {row?.cell?.value === 1
-                ? 'Active'
-                : row?.cell?.value === 0
-                ? 'Inactive'
-                : 'No status'}
-            </span>
-          </span>
-        );
-      },
-    },
-    // {
-    // 	Header: 'ACTION',
-    // 	accessor: 'action',
-    // 	Cell: row => {
-    // 		return (
-    // 			<div className='flex space-x-3 rtl:space-x-reverse justify-center w-8 h-8'>
-    // 				<Tooltip
-    // 					content='edit'
-    // 					placement='top'
-    // 					arrow
-    // 					animation='shift-away'>
-    // 					<button
-    // 						className='action-btn border-none w-8 h-8'
-    // 						type='button'
-    // 						id={row?.row?.id}
-    // 						onClick={i => openUserModal(i)}>
-    // 						<Icon
-    // 							icon='heroicons:pencil-square'
-    // 							className='pointer-events-none'
-    // 						/>
-    // 					</button>
-    // 				</Tooltip>
-    // 			</div>
-    // 		);
-    // 	}
-    // }
-  ];
+             `}>
+							{row?.cell?.value === 1
+								? 'Active'
+								: row?.cell?.value === 0
+								? 'Inactive'
+								: 'No status'}
+						</span>
+					</span>
+				);
+			}
+		},
+		{
+			Header: 'ACTION',
+			accessor: 'action',
+			Cell: row => {
+				return (
+					<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
+						<Tooltip
+							content='edit'
+							placement='top'
+							arrow
+							animation='shift-away'>
+							<button
+								className='border-none w-5 h-5 action-btn'
+								type='button'
+								id={row?.row?.id}
+								onClick={i => openUserModal(i)}>
+								<Icon
+									icon='heroicons:pencil-square'
+									className='w-full h-full pointer-events-none'
+								/>
+							</button>
+						</Tooltip>
+					</div>
+				);
+			}
+		}
+	];
 
 	const columns = useMemo(() => COLUMNS, []);
 	const data = useMemo(() => items, []);
 
-	
 	const tableInstance = useTable(
 		{
 			columns,
@@ -166,21 +167,26 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 		useSortBy,
 		usePagination,
 		useRowSelect,
+		setFilter,
 
 		hooks => {
 			hooks.visibleColumns.push(columns => [
 				// {
-				//   id: "selection",
-				//   Header: ({ getToggleAllRowsSelectedProps }) => (
-				//     <div>
-				//       <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-				//     </div>
-				//   ),
-				//   Cell: ({ row }) => (
-				//     <div>
-				//       <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-				//     </div>
-				//   ),
+				// 	id: 'selection',
+				// 	Header: ({ getToggleAllRowsSelectedProps }) => (
+				// 		<div>
+				// 			<IndeterminateCheckbox
+				// 				{...getToggleAllRowsSelectedProps()}
+				// 			/>
+				// 		</div>
+				// 	),
+				// 	Cell: ({ row }) => (
+				// 		<div>
+				// 			<IndeterminateCheckbox
+				// 				{...row.getToggleRowSelectedProps()}
+				// 			/>
+				// 		</div>
+				// 	)
 				// },
 				...columns
 			]);
@@ -202,37 +208,59 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 		pageCount,
 		setPageSize,
 		setGlobalFilter,
+
 		prepareRow
 	} = tableInstance;
 
 	const { globalFilter, pageIndex, pageSize } = state;
 
+	// TODO: map these values in the select with hasPermission
+	const tableViewOption = [
+		{
+			value: 'bank-user-list',
+			label: 'Bank User List'
+		},
+		{
+			value: 'employee-list',
+			label: 'Employee List'
+		}
+	];
+
 	return (
 		<>
 			<Card>
-				<div className='flex flex-col sm:flex-row justify-between items-center  mb-6 '>
+				<div className='flex sm:flex-row flex-col justify-between items-center mb-6'>
 					<div>
-						<h4 className='card-title mb-2'>{title}</h4>
+						<h4 className='mb-2 card-title'>{title}</h4>
 					</div>
-					<div className='flex flex-col sm:flex-row justify-center items-center gap-6'>
+					<div className='flex sm:flex-row flex-col justify-center items-center gap-6'>
 						<GlobalFilter
 							filter={globalFilter}
 							setFilter={setGlobalFilter}
 						/>
+						<Select
+							options={tableViewOption}
+							onChange={e => setGlobalFilter(e.target.value)}
+							isMulti={false}
+							className='w-40 react-select'
+							classNamePrefix='select'
+							id='icon_s'
+							placeholder={'Filter Users'}
+						/>
 						<Button
 							text={'Invite Users'}
-							className='btn btn-dark text-white py-2 mb-3'
+							className='mb-3 py-2 text-white btn btn-dark'
 							onClick={() => {
 								openForm();
 							}}
 						/>
 					</div>
 				</div>
-				<div className='overflow-x-auto -mx-6'>
+				<div className='-mx-6 overflow-x-auto'>
 					<div className='inline-block min-w-full align-middle'>
 						<div className='overflow-hidden'>
 							<table
-								className='min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700'
+								className='table-fixed divide-y divide-slate-100 dark:divide-slate-700 min-w-full'
 								{...getTableProps}>
 								<thead className='bg-[#EEF4F899] dark:bg-slate-700'>
 									{headerGroups.map(headerGroup => (
@@ -261,7 +289,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 									data={editId ? items[editId[0]] : ''}
 								/>
 								<tbody
-									className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'
+									className='bg-white dark:bg-slate-800 divide-y divide-slate-100 dark:divide-slate-700'
 									{...getTableBodyProps}>
 									{page.map(row => {
 										prepareRow(row);
@@ -289,8 +317,8 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 						</div>
 					</div>
 				</div>
-				<div className='md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center'>
-					<div className=' flex items-center space-x-3 rtl:space-x-reverse'>
+				<div className='md:flex justify-between items-center space-y-5 md:space-y-0 mt-6'>
+					<div className='flex items-center space-x-3 rtl:space-x-reverse'>
 						<select
 							className='form-control py-2 w-max'
 							value={pageSize}
@@ -301,15 +329,15 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								</option>
 							))}
 						</select>
-						<span className='text-sm font-medium text-slate-600 dark:text-slate-300'>
+						<span className='font-medium text-slate-600 text-sm dark:text-slate-300'>
 							Page{' '}
 							<span>
 								{pageIndex + 1} of {pageOptions.length}
 							</span>
 						</span>
 					</div>
-					<ul className='flex items-center  space-x-3  rtl:space-x-reverse flex-wrap'>
-						<li className='text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180'>
+					<ul className='flex flex-wrap items-center space-x-3 rtl:space-x-reverse'>
+						<li className='text-slate-900 text-xl dark:text-white leading-4 rtl:rotate-180'>
 							<button
 								className={` ${
 									!canPreviousPage
@@ -321,7 +349,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								<Icon icon='heroicons:chevron-double-left-solid' />
 							</button>
 						</li>
-						<li className='text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180'>
+						<li className='text-slate-900 text-sm dark:text-white leading-4 rtl:rotate-180'>
 							<button
 								className={` ${
 									!canPreviousPage
@@ -348,7 +376,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								</button>
 							</li>
 						))}
-						<li className='text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180'>
+						<li className='text-slate-900 text-sm dark:text-white leading-4 rtl:rotate-180'>
 							<button
 								className={` ${
 									!canNextPage ? 'opacity-50 cursor-not-allowed' : ''
@@ -358,7 +386,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								Next
 							</button>
 						</li>
-						<li className='text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180'>
+						<li className='text-slate-900 text-xl dark:text-white leading-4 rtl:rotate-180'>
 							<button
 								onClick={() => gotoPage(pageCount - 1)}
 								disabled={!canNextPage}

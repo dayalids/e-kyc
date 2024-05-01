@@ -5,14 +5,13 @@ export const ROLE = {
 }
 
 export const permissions = {
-  'user.create': [ROLE.SUPER_ADMIN, ROLE.EMPLOYEE],
-  'user.read': Object.values(ROLE),
-  'user.update': [ROLE.SUPER_ADMIN, ROLE.EMPLOYEE, ROLE.USER],
-  'user.delete': [ROLE.SUPER_ADMIN]
+  'bank.userlist': [ROLE.SUPER_ADMIN, ROLE.EMPLOYEE],
+  'bank.employeeList': [ROLE.SUPER_ADMIN, ROLE.EMPLOYEE],
+  'user.requests': [ROLE.USER],
+  'users.all': [ROLE.SUPER_ADMIN, ROLE.EMPLOYEE, ROLE.USER]
 }
 
 export const routes = {
   HOME: '/',
-  USERS: '/user',
-  WALLET: '/wallet'
+  USERS: '/user'
 }

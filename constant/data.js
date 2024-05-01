@@ -3,19 +3,22 @@ export const menuItems = [
     title: 'Home',
     isHide: true,
     icon: 'heroicons:home',
-    link: '/'
+    link: '/',
+    permission: 'users.all'
   },
   {
     title: 'Users',
     isHide: true,
     icon: 'heroicons:user',
-    link: '/users'
+    link: '/users',
+    permission: 'users.all'
   },
   {
-    title: 'Roles',
+    title: 'KYC Requests',
     isHide: true,
     icon: 'heroicons:user-group',
-    link: '/role-management'
+    link: '/kyc-requests',
+    permission: 'user.requests'
   }
 ]
 
