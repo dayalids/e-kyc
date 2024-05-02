@@ -20,24 +20,22 @@ export const GET_USER = gql`
 		}
 	}
 `
-export const GET_USERS = gql`
-	query Users($pageNumber: Float!, $pageSize: Float!) {
-		users(pageNumber: $pageNumber, pageSize: $pageSize) {
-			users {
-				_id
-				firstName
-				lastName
-				email
-				userRoles {
-					_id
-					title
-					type
-				}
-				status
-				createdAt
-				updatedAt
+export const LIST_ALL_USERS = gql`
+	query ListAllUsers($pageNumber: Int, $pageSize: Int) {
+		listAllUsers(pageNumber: $pageNumber, pageSize: $pageSize) {
+			_id
+			firstName
+			lastName
+			email
+			mobile
+			dob
+			gender
+			customerID
+			userRole {
+				name
 			}
-			totalCount
+			kycConcent
+			status
 		}
 	}
 `
@@ -48,20 +46,8 @@ export const GET_CURRENT_USER = gql`
 			firstName
 			lastName
 			email
-			mobile
-			userRoles {
-				_id
-				title
-				type
-			}
-			status
-			createdAt
-			updatedAt
-			wallet {
-				ethAddress
-				eosAddress
-				solAddress
-				didAddress
+			userRole {
+				name
 			}
 		}
 	}
@@ -88,6 +74,36 @@ export const GET_ALL_ROLES = gql`
 			}
 			createdBy
 			updatedBy
+			status
+		}
+	}
+`
+
+export const LIST_ALL_BANKS = gql`
+	query ListAllBanks {
+		listAllBanks {
+			_id
+			name
+			description
+			status
+		}
+	}
+`
+export const LIST_ALL_CONCENTS = gql`
+	query ListAllConcents {
+		listAllConcents {
+			_id
+			user {
+				_id
+				firstName
+				org
+			}
+			requestedBy {
+				_id
+				firstName
+				lastName
+				org
+			}
 			status
 		}
 	}

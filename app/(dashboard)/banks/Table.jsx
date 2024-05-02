@@ -40,7 +40,7 @@ const IndeterminateCheckbox = React.forwardRef(
 	}
 );
 
-const Table = ({ title = 'All Users', items, openForm }) => {
+const Table = ({ title = 'All Banks', items, openForm }) => {
 	const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 	const [editId, SetEditId] = useState();
 
@@ -62,7 +62,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 		},
 		{
 			Header: 'Name',
-			accessor: 'firstName',
+			accessor: 'name',
 			Cell: row => {
 				return (
 					<div>
@@ -76,19 +76,18 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 			}
 		},
 		{
-			Header: 'Email',
-			accessor: 'email',
+			Header: 'Description',
+			accessor: 'description',
 			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			}
-		},
-
-		{
-			Header: 'Role',
-			accessor: 'userRole',
-
-			Cell: row => {
-				return <span>{row?.value.name}</span>;
+				return (
+					<div>
+						<span className='inline-flex items-center'>
+							<span className='text-slate-600 text-sm dark:text-slate-300 capitalize'>
+								{row?.cell?.value}
+							</span>
+						</span>
+					</div>
+				);
 			}
 		},
 
@@ -125,33 +124,33 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 					</span>
 				);
 			}
-		},
-		{
-			Header: 'ACTION',
-			accessor: 'action',
-			Cell: row => {
-				return (
-					<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
-						<Tooltip
-							content='edit'
-							placement='top'
-							arrow
-							animation='shift-away'>
-							<button
-								className='border-none w-5 h-5 action-btn'
-								type='button'
-								id={row?.row?.id}
-								onClick={i => openUserModal(i)}>
-								<Icon
-									icon='heroicons:pencil-square'
-									className='w-full h-full pointer-events-none'
-								/>
-							</button>
-						</Tooltip>
-					</div>
-				);
-			}
 		}
+		// {
+		// 	Header: 'ACTION',
+		// 	accessor: 'action',
+		// 	Cell: row => {
+		// 		return (
+		// 			<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
+		// 				<Tooltip
+		// 					content='edit'
+		// 					placement='top'
+		// 					arrow
+		// 					animation='shift-away'>
+		// 					<button
+		// 						className='border-none w-5 h-5 action-btn'
+		// 						type='button'
+		// 						id={row?.row?.id}
+		// 						onClick={i => openUserModal(i)}>
+		// 						<Icon
+		// 							icon='heroicons:pencil-square'
+		// 							className='w-full h-full pointer-events-none'
+		// 						/>
+		// 					</button>
+		// 				</Tooltip>
+		// 			</div>
+		// 		);
+		// 	}
+		// }
 	];
 
 	const columns = useMemo(() => COLUMNS, []);
@@ -238,7 +237,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 							filter={globalFilter}
 							setFilter={setGlobalFilter}
 						/>
-						<Select
+						{/* <Select
 							options={tableViewOption}
 							onChange={e => setGlobalFilter(e.target.value)}
 							isMulti={false}
@@ -246,7 +245,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 							classNamePrefix='select'
 							id='icon_s'
 							placeholder={'Filter Users'}
-						/>
+						/> */}
 						{/* <Button
 							text={'Invite Users'}
 							className='mb-3 py-2 text-white btn btn-dark'

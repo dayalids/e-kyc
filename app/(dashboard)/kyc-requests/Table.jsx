@@ -17,6 +17,7 @@ import {
 import EditForm from './edit';
 import Select from '@/components/ui/Select';
 import { setFilter } from '@/components/partials/app/email/store';
+import ReceiveConcentModal from './ReceiveConcent';
 
 const IndeterminateCheckbox = React.forwardRef(
 	({ indeterminate, ...rest }, ref) => {
@@ -40,7 +41,7 @@ const IndeterminateCheckbox = React.forwardRef(
 	}
 );
 
-const Table = ({ title = 'All Users', items, openForm }) => {
+const Table = ({ title = 'KYC Requests', items, openForm }) => {
 	const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 	const [editId, SetEditId] = useState();
 
@@ -61,8 +62,23 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 			}
 		},
 		{
-			Header: 'Name',
-			accessor: 'firstName',
+			Header: 'Requested By',
+			accessor: 'requestedBy',
+			Cell: row => {
+				return (
+					<div>
+						<span className='inline-flex items-center'>
+							<span className='text-slate-600 text-sm dark:text-slate-300 capitalize'>
+								{row?.value.firstName} {row?.value.lastName}
+							</span>
+						</span>
+					</div>
+				);
+			}
+		},
+		{
+			Header: 'Bank',
+			accessor: 'requestedBy.org',
 			Cell: row => {
 				return (
 					<div>
@@ -75,37 +91,21 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 				);
 			}
 		},
-		{
-			Header: 'Email',
-			accessor: 'email',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			}
-		},
 
 		{
-			Header: 'Role',
-			accessor: 'userRole',
-
-			Cell: row => {
-				return <span>{row?.value.name}</span>;
-			}
-		},
-
-		{
-			Header: 'status',
+			Header: 'Status',
 			accessor: 'status',
 			Cell: row => {
 				return (
 					<span className='block w-full'>
 						<span
 							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-								row?.cell?.value === 1
+								row?.cell?.value === 3
 									? 'text-success-500  bg-success-500'
 									: ''
 							} 
             ${
-							row?.cell?.value === 0
+							row?.cell?.value === 2
 								? 'text-warning-500 bg-warning-500'
 								: ''
 						}
@@ -116,10 +116,10 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 						}
             +
              `}>
-							{row?.cell?.value === 1
-								? 'Active'
-								: row?.cell?.value === 0
-								? 'Inactive'
+							{row?.cell?.value === 2
+								? 'Pending'
+								: row?.cell?.value === 3
+								? 'Approved'
 								: 'No status'}
 						</span>
 					</span>
@@ -133,7 +133,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 				return (
 					<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
 						<Tooltip
-							content='edit'
+							content='Receive Concent'
 							placement='top'
 							arrow
 							animation='shift-away'>
@@ -143,7 +143,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								id={row?.row?.id}
 								onClick={i => openUserModal(i)}>
 								<Icon
-									icon='heroicons:pencil-square'
+									icon='heroicons:arrow-down-on-square-stack'
 									className='w-full h-full pointer-events-none'
 								/>
 							</button>
@@ -156,6 +156,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 
 	const columns = useMemo(() => COLUMNS, []);
 	const data = useMemo(() => items, []);
+	console.log(data);
 
 	const tableInstance = useTable(
 		{
@@ -215,16 +216,6 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 	const { globalFilter, pageIndex, pageSize } = state;
 
 	// TODO: map these values in the select with hasPermission
-	const tableViewOption = [
-		{
-			value: 'bank-user-list',
-			label: 'Bank User List'
-		},
-		{
-			value: 'employee-list',
-			label: 'Employee List'
-		}
-	];
 
 	return (
 		<>
@@ -238,15 +229,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 							filter={globalFilter}
 							setFilter={setGlobalFilter}
 						/>
-						<Select
-							options={tableViewOption}
-							onChange={e => setGlobalFilter(e.target.value)}
-							isMulti={false}
-							className='w-40 react-select'
-							classNamePrefix='select'
-							id='icon_s'
-							placeholder={'Filter Users'}
-						/>
+
 						{/* <Button
 							text={'Invite Users'}
 							className='mb-3 py-2 text-white btn btn-dark'
@@ -283,7 +266,8 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 										</tr>
 									))}
 								</thead>
-								<EditForm
+
+								<ReceiveConcentModal
 									isUserModalOpen={isUserModalOpen}
 									setIsUserModalOpen={setIsUserModalOpen}
 									data={editId ? items[editId[0]] : ''}

@@ -24,7 +24,7 @@ const schema = yup.object({
 	roleId: yup.string().required('Role is required')
 });
 
-const InviteUsers = ({ isModalOpen, setIsModalOpen }) => {
+const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 	const [inviteUser] = useMutation(INVITE_ADMIN_USER);
 
 	const {
@@ -77,7 +77,7 @@ const InviteUsers = ({ isModalOpen, setIsModalOpen }) => {
 					activeModal={isModalOpen}
 					onClose={closeForm}
 					title='Invite User'
-					className='max-w-xl pb-4 mt-[100px]'>
+					className='mt-[100px] pb-4 max-w-xl'>
 					<form
 						autoComplete='off'
 						onSubmit={handleSubmit(onSubmit, onError)}>
@@ -114,7 +114,7 @@ const InviteUsers = ({ isModalOpen, setIsModalOpen }) => {
 
 						<Button
 							type='submit'
-							className='btn btn-dark text-white block w-full text-center mt-8 mb-4'>
+							className='block mt-8 mb-4 w-full text-center text-white btn btn-dark'>
 							Send Invite
 						</Button>
 					</form>
@@ -124,4 +124,4 @@ const InviteUsers = ({ isModalOpen, setIsModalOpen }) => {
 	);
 };
 
-export default InviteUsers;
+export default AddUsers;

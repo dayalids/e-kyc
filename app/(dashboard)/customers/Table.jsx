@@ -17,6 +17,8 @@ import {
 import EditForm from './edit';
 import Select from '@/components/ui/Select';
 import { setFilter } from '@/components/partials/app/email/store';
+import SendConcentModal from './SendConcent';
+import ViewDetailsModal from './ViewDetails';
 
 const IndeterminateCheckbox = React.forwardRef(
 	({ indeterminate, ...rest }, ref) => {
@@ -42,12 +44,21 @@ const IndeterminateCheckbox = React.forwardRef(
 
 const Table = ({ title = 'All Users', items, openForm }) => {
 	const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+	const [isViewDetailsModalOpen, setIsViewDetailsModalOpen] =
+		useState(false);
 	const [editId, SetEditId] = useState();
 
 	const openUserModal = i => {
 		const ClickedButtonIndex = i.target.id;
 		SetEditId([ClickedButtonIndex, data[ClickedButtonIndex]._id]);
 		setIsUserModalOpen(true);
+		// console.log("EditId:", ClickedButtonIndex);
+		// console.log("EditId:", data[ClickedButtonIndex]._id);
+	};
+	const openViewDetailsModal = i => {
+		const ClickedButtonIndex = i.target.id;
+		SetEditId([ClickedButtonIndex, data[ClickedButtonIndex]._id]);
+		setIsViewDetailsModalOpen(true);
 		// console.log("EditId:", ClickedButtonIndex);
 		// console.log("EditId:", data[ClickedButtonIndex]._id);
 	};
@@ -133,7 +144,7 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 				return (
 					<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
 						<Tooltip
-							content='edit'
+							content='send concent'
 							placement='top'
 							arrow
 							animation='shift-away'>
@@ -143,7 +154,33 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 								id={row?.row?.id}
 								onClick={i => openUserModal(i)}>
 								<Icon
-									icon='heroicons:pencil-square'
+									icon='heroicons:paper-airplane'
+									className='w-full h-full pointer-events-none'
+								/>
+							</button>
+						</Tooltip>
+					</div>
+				);
+			}
+		},
+		{
+			Header: 'VIEW',
+			accessor: 'view',
+			Cell: row => {
+				return (
+					<div className='flex justify-center space-x-3 rtl:space-x-reverse w-8 h-8'>
+						<Tooltip
+							content='view details'
+							placement='top'
+							arrow
+							animation='shift-away'>
+							<button
+								className='border-none w-5 h-5 action-btn'
+								type='button'
+								id={row?.row?.id}
+								onClick={i => openViewDetailsModal(i)}>
+								<Icon
+									icon='heroicons:eye'
 									className='w-full h-full pointer-events-none'
 								/>
 							</button>
@@ -247,13 +284,13 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 							id='icon_s'
 							placeholder={'Filter Users'}
 						/>
-						{/* <Button
-							text={'Invite Users'}
+						<Button
+							text={'Create Customer'}
 							className='mb-3 py-2 text-white btn btn-dark'
 							onClick={() => {
 								openForm();
 							}}
-						/> */}
+						/>
 					</div>
 				</div>
 				<div className='-mx-6 overflow-x-auto'>
@@ -283,9 +320,15 @@ const Table = ({ title = 'All Users', items, openForm }) => {
 										</tr>
 									))}
 								</thead>
-								<EditForm
+
+								<SendConcentModal
 									isUserModalOpen={isUserModalOpen}
 									setIsUserModalOpen={setIsUserModalOpen}
+									data={editId ? items[editId[0]] : ''}
+								/>
+								<ViewDetailsModal
+									isUserModalOpen={isViewDetailsModalOpen}
+									setIsUserModalOpen={setIsViewDetailsModalOpen}
 									data={editId ? items[editId[0]] : ''}
 								/>
 								<tbody

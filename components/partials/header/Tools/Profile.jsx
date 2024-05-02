@@ -22,30 +22,26 @@ import { useQuery } from '@apollo/client';
 
 const ProfileLabel = () => {
 	const dispatch = useDispatch();
-	const userId = localStorage.getItem('userId');
 
 	const { error } = useQuery(GET_CURRENT_USER, {
-		variables: {
-			_id: userId
-		},
+		variables: {},
 
 		onCompleted: data => {
 			const authToken = localStorage.getItem('authToken');
 			// console.log("authToken+++", authToken);
 			if (!authToken) return;
 			console.log('inside');
-			console.log(data.getCurrentUser, 'data');
+
 			console.log(authToken, 'authToken');
 			// console.log('res.data.getUser', res.data.getUser);
-			const defaultRole = getDefaultRole(
-				data.getCurrentUser.userRoles
-			);
+			const defaultRole = data.getCurrentUser.userRole.name;
+
 			dispatch(
 				loadUser({
 					_id: data.getCurrentUser._id,
 					firstName: data.getCurrentUser.firstName,
 					lastName: data.getCurrentUser.lastName,
-					userRoles: data.getCurrentUser.userRoles,
+					userRoles: data.getCurrentUser.userRole.name,
 					gender: data.getCurrentUser.gender,
 					defaultRole: defaultRole,
 					mobile: data.getCurrentUser.mobile,
@@ -60,13 +56,7 @@ const ProfileLabel = () => {
 
 	const { user } = useSelector(selectUserAuth);
 
-	const { data } = useQuery(GET_OBJECT_QUERY, {
-		variables: {
-			key: user?.profilePic
-		},
-		skip: !user?.profilePic
-	});
-	const ProfileUrl = data?.getObject?.url;
+	const ProfileUrl = '';
 
 	return (
 		<div className='flex items-center'>
@@ -79,19 +69,19 @@ const ProfileLabel = () => {
 						<img
 							src={ProfileUrl}
 							alt=''
-							className='block w-full h-full object-cover rounded-full'
+							className='block rounded-full w-full h-full object-cover'
 						/>
 					) : null}
 				</div>
 			</div>
-			<div className='flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap'>
-				<span className='overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block'>
+			<div className='lg:flex flex-none items-center hidden font-normal text-ellipsis text-slate-600 text-sm dark:text-white whitespace-nowrap overflow-hidden'>
+				<span className='block w-[85px] text-ellipsis whitespace-nowrap overflow-hidden'>
 					{user.firstName} {user.lastName}
 					<br />
-					{<p className='text-xs '> {user.defaultRole}</p>}
+					{<p className='text-xs'> {user.defaultRole}</p>}
 				</span>
 
-				<span className='text-base inline-block ltr:ml-[10px] rtl:mr-[10px]'>
+				<span className='inline-block rtl:mr-[10px] ltr:ml-[10px] text-base'>
 					<Icon icon='heroicons-outline:chevron-down'></Icon>
 				</span>
 			</div>
@@ -158,7 +148,7 @@ const Profile = () => {
 							}`}>
 							<div className={`block cursor-pointer px-4 py-2`}>
 								<div className='flex items-center'>
-									<span className='block text-xl ltr:mr-3 rtl:ml-3'>
+									<span className='block ltr:mr-3 rtl:ml-3 text-xl'>
 										<Icon icon={item.icon} />
 									</span>
 									<span className='block text-sm'>{item.label}</span>

@@ -1,20 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const AUTH_USER = gql`
-	mutation AuthUser($email: String!, $password: String!) {
-		loginUser(input: { email: $email, password: $password }) {
-			userId
-			userRoles {
-				title
-				type
-			}
-			token
-			firstName
-			lastName
-			status
-		}
-	}
-`
 export const INVITE_USER = gql`
 	mutation InviteUser($email: String!, $role: Int!) {
 		inviteUser(input: { email: $email, role: $role }) {
@@ -22,42 +7,7 @@ export const INVITE_USER = gql`
 		}
 	}
 `
-export const LOGIN_USER = gql`
-	mutation LoginUser($email: String!, $password: String!) {
-		loginUser(input: { email: $email, password: $password }) {
-			token
-			firstName
-			lastName
-			userId
-			spaces {
-				_id
-				spaceId
-				customRoles {
-					title
-					type
-					abilities {
-						title
-					}
-				}
-			}
-			wallet {
-				ethAddress
-				eosAddress
-				solAddress
-				didAddress
-			}
-			userRoles {
-				_id
-				title
-				type
-				abilities {
-					_id
-					title
-				}
-			}
-		}
-	}
-`
+
 export const UPDATE_USER_DETAILS_MUTATION = gql`
 	mutation UpdateUser($_id: String!, $input: UpdateUserInput!) {
 		updateUser(_id: $_id, input: $input) {
@@ -97,5 +47,35 @@ export const INVITE_ADMIN_USER = gql`
 			firstName
 			lastName
 		}
+	}
+`
+// ---------------
+export const AUTH_USER = gql`
+	mutation AuthUser($input: authUser!) {
+		authUser(input: $input) {
+			token
+			firstName
+			lastName
+			userId
+			role {
+				name
+			}
+		}
+	}
+`
+
+export const CREATE_CUSTOMER = gql`
+	mutation CreateCustomer($input: CreateCustomerInput!) {
+		createCustomer(input: $input) {
+			token
+			firstName
+			lastName
+			userId
+		}
+	}
+`
+export const UPDATE_CONCENT = gql`
+	mutation UpdateConcent($_id: ID!, $input: UpdateConcentInput!) {
+		updateConcent(_id: $_id, input: $input)
 	}
 `

@@ -11,14 +11,28 @@ export const menuItems = [
     isHide: true,
     icon: 'heroicons:user',
     link: '/users',
-    permission: 'users.all'
+    permission: 'user.list'
   },
   {
     title: 'KYC Requests',
     isHide: true,
-    icon: 'heroicons:user-group',
+    icon: 'heroicons:check-badge',
     link: '/kyc-requests',
     permission: 'user.requests'
+  },
+  {
+    title: 'Banks',
+    isHide: true,
+    icon: 'heroicons:building-storefront',
+    link: '/banks',
+    permission: 'bank.list'
+  },
+  {
+    title: 'Customers',
+    isHide: true,
+    icon: 'heroicons:user-group',
+    link: '/customers',
+    permission: 'customer.list'
   }
 ]
 

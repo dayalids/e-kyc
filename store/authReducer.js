@@ -10,7 +10,7 @@ const initialState = {
     firstName: '',
     lastName: '',
     gender: '',
-    userRoles: [],
+    userRole: '',
     defaultRole: '',
     mobile: '',
     profilePic: '',
@@ -25,10 +25,11 @@ export const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     loadUser: (state, action) => {
+      console.log('loadUser', action.payload)
       state.user = {
         ...state.user,
         _id: action.payload._id,
-        userRoles: action.payload.userRoles,
+        userRole: action.payload.userRole,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         gender: action.payload.gender,
@@ -44,8 +45,7 @@ export const authSlice = createSlice({
       state.authToken = action.payload.token
       state.user = {
         ...state.user,
-        _id: action.payload._id,
-        userRoles: action.payload.userRoles,
+        userRoles: action.payload.userRole,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         defaultRole: action.payload.defaultRole

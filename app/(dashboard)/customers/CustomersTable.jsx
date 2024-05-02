@@ -1,13 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { GET_USERS, LIST_ALL_USERS } from '@/graphql/queries';
+import {
+	GET_ALL_USERS,
+	GET_USERS,
+	LIST_ALL_USERS
+} from '@/graphql/queries';
 import { useQuery } from '@apollo/client';
 import SkeletionTable from '@/components/skeleton/Table';
 import AddUsers from './add';
 import Table from './Table';
 
-const UserTable = () => {
+const CustomersTable = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openForm = () => {
@@ -20,11 +24,15 @@ const UserTable = () => {
 			pageSize: 20
 		}
 	});
+
 	const dataWithId =
-		data?.listAllUsers?.map((obj, index) => ({
-			...obj,
-			id: index + 1
-		})) || [];
+		data?.listAllUsers
+			.filter(obj => obj.userRole?.name === 'CUSTOMER')
+			.map((obj, index) => ({
+				...obj,
+				id: index + 1
+			})) || [];
+
 	if (loading) return <SkeletionTable />;
 	if (error) return <pre>{error.message}</pre>;
 	return (
@@ -38,4 +46,4 @@ const UserTable = () => {
 	);
 };
 
-export default UserTable;
+export default CustomersTable;

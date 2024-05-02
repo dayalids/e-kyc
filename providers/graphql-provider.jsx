@@ -9,9 +9,8 @@ import { setContext } from '@apollo/client/link/context';
 
 // Define your Apollo client
 const httpLink = createHttpLink({
-	uri:
-		process.env.GRAPHQL_API ||
-		'https://dev-apis.bharatblockchain.io/graphql'
+	uri: process.env.GRAPHQL_API || 'http://localhost:4000/graphql'
+	// 'https://dev-apis.bharatblockchain.io/graphql'
 });
 
 const authLink = setContext((_, { headers }) => {

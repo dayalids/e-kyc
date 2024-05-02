@@ -44,24 +44,26 @@ const LoginForm = () => {
 			// call api and get data
 			const { data: apiData } = await authUser({
 				variables: {
-					email: data.email,
-					password: data.password
+					input: {
+						email: data.email,
+						password: data.password
+					}
 				}
 			});
 
-			const defaultRole = getDefaultRole(apiData.loginUser.userRoles);
+			const defaultRole = apiData.authUser.role.name;
 			// dispatch the handle login the data for profile
-			localStorage.setItem('authToken', apiData.loginUser.token);
+			localStorage.setItem('authToken', apiData.authUser.token);
 			localStorage.setItem('userRole', defaultRole);
-			localStorage.setItem('userId', apiData.loginUser.userId);
+			localStorage.setItem('userId', apiData.authUser?.role?.name);
+			console.log('authUser', apiData.authUser);
 			dispatch(
 				handleLogin({
-					_id: apiData.loginUser.userId,
-					firstName: apiData.loginUser.firstName,
-					lastName: apiData.loginUser.lastName,
-					userRoles: apiData.loginUser.userRoles,
+					firstName: apiData.authUser.firstName,
+					lastName: apiData.authUser.lastName,
+					userRole: apiData.authUser?.role?.name,
 					defaultRole: defaultRole,
-					token: apiData.loginUser.token
+					token: apiData.authUser.token
 				})
 			);
 			toast.success('Login Successful');
@@ -88,7 +90,7 @@ const LoginForm = () => {
 		<form
 			autoComplete='off'
 			onSubmit={handleSubmit(onSubmit)}
-			className='space-y-4 w-[100%] p-5 '>
+			className='space-y-4 p-5 w-[100%]'>
 			<Textinput
 				className='text-black-500'
 				name='email'
@@ -117,12 +119,12 @@ const LoginForm = () => {
 				/>
 				<Link
 					href='/auth/forgot-password'
-					className='text-sm text-black-500 dark:text-slate-400 leading-6 font-medium'>
+					className='font-medium text-black-500 text-sm dark:text-slate-400 leading-6'>
 					Forgot Password?
 				</Link>
 			</div>
 
-			<button className='btn btn-dark block w-full text-center'>
+			<button className='block w-full text-center btn btn-dark'>
 				Sign in
 			</button>
 		</form>
