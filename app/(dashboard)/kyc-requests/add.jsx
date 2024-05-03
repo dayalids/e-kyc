@@ -58,7 +58,7 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 			if (error) {
 				throw new Error(error);
 			}
-			toast.success('Invitation sent sucessfully');
+			toast.success('KYC Request sent sucessfully');
 			closeForm();
 			reset();
 		} catch (error) {

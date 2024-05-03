@@ -64,7 +64,7 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 						email: reqData.email,
 						password: 'Dayal@123456',
 						mobile: reqData.mobile,
-						userRole: '66333fa52e29f35b9a7bfab0',
+						userRole: '66346f9f1ce1ae6730abe60d',
 						org: reqData.org,
 						affiliations: reqData.affiliations,
 						status: 1,
