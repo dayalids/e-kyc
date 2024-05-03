@@ -7,11 +7,25 @@ export const menuItems = [
     permission: 'users.all'
   },
   {
+    title: 'Banks',
+    isHide: true,
+    icon: 'heroicons:building-storefront',
+    link: '/banks',
+    permission: 'bank.list'
+  },
+  {
     title: 'Users',
     isHide: true,
     icon: 'heroicons:user',
     link: '/users',
     permission: 'user.list'
+  },
+  {
+    title: 'Customers',
+    isHide: true,
+    icon: 'heroicons:user-group',
+    link: '/customers',
+    permission: 'customer.list'
   },
   {
     title: 'KYC Requests',
@@ -20,20 +34,8 @@ export const menuItems = [
     link: '/kyc-requests',
     permission: 'user.requests'
   },
-  {
-    title: 'Banks',
-    isHide: true,
-    icon: 'heroicons:building-storefront',
-    link: '/banks',
-    permission: 'bank.list'
-  },
-  {
-    title: 'Customers',
-    isHide: true,
-    icon: 'heroicons:user-group',
-    link: '/customers',
-    permission: 'customer.list'
-  }
+  
+ 
 ]
 
 export const topMenu = [

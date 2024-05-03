@@ -14,6 +14,9 @@ import Button from '@/components/ui/Button';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
+import { CREATE_CUSTOMER } from '@/graphql/mutations';
+
+
 const schema = yup.object({
 	firstname: yup.string().required('Firstname is Required'),
 	lastname: yup.string().required('Lastname is Required'),
@@ -21,11 +24,19 @@ const schema = yup.object({
 		.string()
 		.email('Invalid email address')
 		.required('Email is Required'),
-	roleId: yup.string().required('Role is required')
+	org: yup.string().required('Organization is required'),
+	affiliations: yup.string().required('Affiliation is required'),
+	dob: yup.string().required('Date of Birth is required'),
+	gender: yup.string().required('Gender is required'),
+	customerID: yup.string().required('Customer ID is required'),
+	mobile: yup.string().required('Mobile is required')
+
+
 });
 
 const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
-	const [inviteUser] = useMutation(INVITE_ADMIN_USER);
+	const [createCustomer] = useMutation(CREATE_CUSTOMER);
+
 
 	const {
 		register,
@@ -45,13 +56,21 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 
 	const onSubmit = async reqData => {
 		try {
-			const { data: mutationData, error } = await inviteUser({
+			const { data: mutationData, error } = await createCustomer({
 				variables: {
 					input: {
 						firstName: reqData.firstname,
 						lastName: reqData.lastname,
 						email: reqData.email,
-						roleId: reqData.roleId
+						password: 'Dayal@123456',
+						mobile: reqData.mobile,
+						userRole: '66333fa52e29f35b9a7bfab0',
+						org: reqData.org,
+						affiliations: reqData.affiliations,
+						status: 1,
+						dob: reqData.dob,
+						gender: reqData.gender,
+						customerID: reqData.customerID
 					}
 				}
 			});
@@ -101,6 +120,27 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 							autoComplete='off'
 							onClick={() => clearErrors()}
 						/>
+						<Textinput
+							name='customerID'
+							label='Customer ID'
+							type='text'
+							placeholder='Enter Customer ID'
+							register={register}
+							error={errors?.customerID}
+							autoComplete='off'
+							onClick={() => clearErrors()}
+						/>
+
+						<Textinput
+							name='dob'
+							label='Date of Birth'
+							type='text'
+							placeholder='Enter Date of Birth'
+							register={register}
+							error={errors?.dob}
+							autoComplete='off'
+							onClick={() => clearErrors()}
+						/>
 
 						<Textinput
 							name='email'
@@ -118,7 +158,7 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 							type='text'
 							placeholder='Enter Mobile Number'
 							register={register}
-							error={errors?.email}
+							error={errors?.mobile}
 							autoComplete='off'
 							onClick={() => clearErrors()}
 						/>
@@ -128,7 +168,7 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 							type='text'
 							placeholder='Enter Gender'
 							register={register}
-							error={errors?.email}
+							error={errors?.gender}
 							autoComplete='off'
 							onClick={() => clearErrors()}
 						/>
@@ -136,19 +176,19 @@ const AddUsers = ({ isModalOpen, setIsModalOpen }) => {
 							name='org'
 							label='Organization'
 							type='text'
-							placeholder='Enter Mobile Number'
+							placeholder='Enter Organization'
 							register={register}
-							error={errors?.email}
+							error={errors?.org}
 							autoComplete='off'
 							onClick={() => clearErrors()}
 						/>
 						<Textinput
-							name='dob'
-							label='Date Of Birth'
+							name='affiliations'
+							label='Affiliation'
 							type='text'
-							placeholder='Enter DOB'
+							placeholder='Enter Affiliation'
 							register={register}
-							error={errors?.email}
+							error={errors?.affiliations}
 							autoComplete='off'
 							onClick={() => clearErrors()}
 						/>

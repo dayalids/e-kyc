@@ -10,24 +10,28 @@ const StarterPage = () => {
 	return (
 		<>
 			<div>
-				{/* <div className="card2">
-          <h5 className="text"> Welcome to Bharat Blockchain Network (BBN)</h5>
+				<div className="card2">
+          <h5 className="text"> Welcome to E-KYC Application</h5>
           <br />
           <span>
-            India's largest Academic Consortium Network. We are happy to partner
-            with your College/ University along with 100+ Academic Partners
-            across 15 states in India.
+		  A Blockchain based DAPP.
           </span>
-        </div> */}
+        </div>
 				<br />
-				<div className='col-span-12 lg:col-span-8 2xl:col-span-9 m-4'>
-					<div className='gap-8 grid grid-cols-1 md:grid-cols-4'>
+				{/* <div className='col-span-12 lg:col-span-8 2xl:col-span-9 m-4'>
+					<div className='gap-8 grid grid-cols-1 md:grid-cols-4 w-full'>
 						<div className='bg-primary card-chart'>
 							{' '}
-							<h5>Welcome to E-KYC application </h5>
+							<h4>Welcome to E-KYC application </h4>
+							<h5>Blockchain based DAPP.</h5>
 						</div>
-						{/* <GroupChart2 /> */}
+
+					
 					</div>
+				</div> */}
+
+				<div className='gap-5 grid grid-cols-1 md:grid-cols-2'>
+				<GroupChart2 />
 				</div>
 				{/* <div className="gap-5 grid grid-cols-12">
           <div className="col-span-12 lg:col-span-7 2xl:col-span-8">

@@ -65,7 +65,7 @@ export const AUTH_USER = gql`
 `
 
 export const CREATE_CUSTOMER = gql`
-	mutation CreateCustomer($input: CreateCustomerInput!) {
+	mutation CreateCustomer($input: UserInput!) {
 		createCustomer(input: $input) {
 			token
 			firstName
@@ -74,8 +74,18 @@ export const CREATE_CUSTOMER = gql`
 		}
 	}
 `
-export const UPDATE_CONCENT = gql`
-	mutation UpdateConcent($_id: ID!, $input: UpdateConcentInput!) {
-		updateConcent(_id: $_id, input: $input)
+
+
+export const CREATE_CONCENT = gql`
+	mutation CreateConcent($input: ConcentInput!) {
+		createConcent(input: $input)
 	}
 `
+
+export const UPDATE_CONCENT = gql`
+  mutation UpdateConcent($_id: ID!, $input: UpdateConcentInput!) {
+    updateConcent(_id: $_id, input: $input)
+  }
+`
+
+

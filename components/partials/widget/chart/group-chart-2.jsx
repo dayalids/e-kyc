@@ -209,19 +209,19 @@ const shapeLine3 = {
 const statistics = [
   {
     name: shapeLine1,
-    title: "Totel revenue",
-    count: "3,564",
+    title: "Consortium Banks",
+    count: "3",
     bg: "bg-[#E5F9FF] dark:bg-slate-900	",
     text: "text-info-500",
-    icon: "heroicons:shopping-cart",
+    icon: "heroicons:building-library",
   },
   {
     name: shapeLine2,
-    title: "Products sold",
-    count: "564",
+    title: "Customers",
+    count: "10",
     bg: "bg-[#FFEDE6] dark:bg-slate-900	",
     text: "text-warning-500",
-    icon: "heroicons:cube",
+    icon: "heroicons:users",
   },
   {
     name: shapeLine3,
